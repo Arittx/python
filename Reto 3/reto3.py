@@ -1,5 +1,37 @@
 import os
+from typing import Counter
 import numpy as np
+
+def validateLatitude (latitude): 
+    minLatitude = -4.227
+    maxLatitude = -3.002
+
+    if (not not latitude.strip()):
+        latitude = float (latitude)
+
+        if (latitude >= minLatitude and latitude <= maxLatitude): 
+            return True
+        else:
+            print ("Error coordenada")
+            return False
+    print ("Error")
+    return False 
+
+def validateLongitude (longitude): 
+    minLongitude = -70.365
+    maxLongitude = -69.714 
+
+    if (not not longitude.strip()):
+        longitude = float (longitude)
+
+        if (longitude >= minLongitude and longitude <= maxLongitude): 
+            return True
+        else:
+            print ("Error coordenada")
+            return False
+    print ("Error")
+    return False 
+
 #Mensaje de bienvenida
 print ("Bienvenido al sistema de ubicación para zonas públicas WIFI")
 
@@ -37,6 +69,12 @@ if user == userPreset:
                 reorderMenu = False
                 cleanConsole = False
                 selectedFavorite = 0 
+
+                registeredCoordenates = False
+                homeCoordenate = np.array ([])
+                workCoordenate = np.array ([])
+                parkCoordenate = np.array ([])
+                locationCoordenates = np.array ([])
 
                 while (startedMenu == False or isError == True or reorderMenu == True or backToMenu == True) and cantErrors <3:
                     backToMenu = False
@@ -110,6 +148,87 @@ if user == userPreset:
                         if option == 2:
                             print ("Usted ha elegido la opción 2")
 
+                            if not registeredCoordenates:
+                            
+                                #REGISTER HOME COORDENATES
+                                print ("Ingresar coordenadas de hogar")
+                                homeLatitude = input ("Ingresar latitud")
+                                homeLatitudeValidation = validateLatitude (homeLatitude)
+
+                                if homeLatitudeValidation: 
+                                    homeLatitude = float (homeLatitude)
+                                    np.append (homeCoordenate,format (homeLatitude, ".3f"))
+                                else:
+                                    break
+
+                                homeLongitude = input ("Ingresar longitud")
+                                homeLongitudeValidation = validateLongitude (homeLongitude)
+
+                                if homeLongitudeValidation: 
+                                    homeLongitude = float (homeLongitude)
+                                    np.append (homeCoordenate, format (homeLongitude, ".3f"))
+                                    np.append (locationCoordenates, homeCoordenate)
+                                else:
+                                    break
+
+                                #REGISTER WORK COORDENATES
+
+                                print ("Ingresar coordenadas de trabajo")
+                                workLatitude = input ("Ingresar latitud")
+                                workLatitudeValidation = validateLatitude (workLatitude)
+
+                                if workLatitudeValidation: 
+                                    workLatitude = float (workLatitude)
+                                    np.append (workCoordenate,format (workLatitude, ".3f"))
+                                else:
+                                    break
+
+                                workLongitude = input ("Ingresar longitud")
+                                workLongitudeValidation = validateLongitude (workLongitude)
+
+                                if workLongitudeValidation: 
+                                    workLongitude = float (workLongitude)
+                                    np.append (workCoordenate, format (workLongitude, ".3f"))
+                                    np.append (locationCoordenates, workCoordenate)
+                                else:
+                                    break
+
+                                #REGISTER PARK COORDENATES
+
+                                print ("Ingresar coordenadas de parque")
+                                parkLatitude = input ("Ingresar latitud")
+                                parkLatitudeValidation = validateLatitude (parkLatitude)
+
+                                if parkLatitudeValidation: 
+                                    parkLatitude = float (parkLatitude)
+                                    np.append (parkCoordenate,format (parkLatitude, ".3f"))
+                                else:
+                                    break
+
+                                parkLongitude = input ("Ingresar longitud")
+                                parkLongitudeValidation = validateLongitude (parkLongitude)
+                                
+                                if parkLongitudeValidation: 
+                                    parkLongitude = float (parkLongitude)
+                                    np.append (parkCoordenate, format (parkLongitude, ".3f"))
+                                    np.append (locationCoordenates, parkCoordenate)
+                                else:
+                                    break 
+                            else:
+                                print ("Actualizando coordenadas")
+
+                                counter = 1 
+
+                                for coordenate in locationCoordenates:
+                                    latitude = coordenate [0]
+                                    longitude = coordenate [1]
+                                    print ("Coordenada [latitud,longitud] " + counter + " : ["+ latitude + ", "+ longitude + "]")
+                                    counter = counter + 1
+                                    
+                            backToMenu = True
+                            registeredCoordenates = True
+
+
                         if option == 1:
 
                             print ("Usted ha elegido la opción 1")
@@ -136,3 +255,4 @@ if user == userPreset:
         print   ("Error") 
 else:
     print ("Error")
+
