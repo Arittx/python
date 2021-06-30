@@ -241,8 +241,6 @@ if user == userPreset:
                                     print(selection)
                                 else:
                                     backToMenu = True
-                                    break
-
                         if option == 1:
 
                             print ("Usted ha elegido la opción 1")
