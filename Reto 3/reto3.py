@@ -237,10 +237,36 @@ if user == userPreset:
                                 print("Presione 1,2 o 3 para actualizar la respectiva coordenadas")
                                 selection = int(input("Presione 0 para regresar al menu"))
                                 
-                                if selection != 0:
-                                    print(selection)
+                                if selection == 0 or selection == 1 or selection == 2 or selection == 3:
+                                    if selection != 0 :
+                                        index = selection - 1
+
+                                        newCoordenate = np.array ([])
+                                        newLatitude = input ("Ingresar latitud")
+                                        newLatitudeValidation = validateLatitude (newLatitude)
+
+                                        if newLatitudeValidation: 
+                                            newLatitude = float (newLatitude)
+                                            newCoordenate = np.append (newCoordenate,format (newLatitude, ".3f"))
+                                        
+                                        else:
+                                            break
+
+                                        newLongitude = input ("Ingresar longitud")
+                                        newLongitudeValidation = validateLongitude (newLongitude)
+                                
+                                        if newLongitudeValidation: 
+                                            newLongitude = float (newLongitude)
+                                            newCoordenate = np.append (newCoordenate, format (newLongitude, ".3f"))
+                                            locationCoordenates[index] = newCoordenate
+                                        else:
+                                            break 
+                                        backToMenu = True
+                                    else:
+                                        backToMenu = True
                                 else:
-                                    backToMenu = True
+                                    print ("Error actualización")
+
                         if option == 1:
 
                             print ("Usted ha elegido la opción 1")
