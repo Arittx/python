@@ -1,5 +1,4 @@
 import os
-from typing import Counter
 import numpy as np
 
 def validateLatitude (latitude): 
@@ -74,7 +73,7 @@ if user == userPreset:
                 homeCoordenate = np.array ([])
                 workCoordenate = np.array ([])
                 parkCoordenate = np.array ([])
-                locationCoordenates = np.array ([])
+                locationCoordenates = np.empty([3,2], dtype=float)
 
                 while (startedMenu == False or isError == True or reorderMenu == True or backToMenu == True) and cantErrors <3:
                     backToMenu = False
@@ -157,7 +156,7 @@ if user == userPreset:
 
                                 if homeLatitudeValidation: 
                                     homeLatitude = float (homeLatitude)
-                                    np.append (homeCoordenate,format (homeLatitude, ".3f"))
+                                    homeCoordenate = np.append (homeCoordenate,format (homeLatitude, ".3f"))
                                 else:
                                     break
 
@@ -166,8 +165,8 @@ if user == userPreset:
 
                                 if homeLongitudeValidation: 
                                     homeLongitude = float (homeLongitude)
-                                    np.append (homeCoordenate, format (homeLongitude, ".3f"))
-                                    np.append (locationCoordenates, homeCoordenate)
+                                    homeCoordenate = np.append (homeCoordenate, format (homeLongitude, ".3f"))
+                                    locationCoordenates[0] = homeCoordenate
                                 else:
                                     break
 
@@ -179,7 +178,7 @@ if user == userPreset:
 
                                 if workLatitudeValidation: 
                                     workLatitude = float (workLatitude)
-                                    np.append (workCoordenate,format (workLatitude, ".3f"))
+                                    workCoordenate = np.append (workCoordenate,format (workLatitude, ".3f"))
                                 else:
                                     break
 
@@ -188,8 +187,8 @@ if user == userPreset:
 
                                 if workLongitudeValidation: 
                                     workLongitude = float (workLongitude)
-                                    np.append (workCoordenate, format (workLongitude, ".3f"))
-                                    np.append (locationCoordenates, workCoordenate)
+                                    workCoordenate = np.append (workCoordenate, format (workLongitude, ".3f"))
+                                    locationCoordenates[1] = workCoordenate
                                 else:
                                     break
 
@@ -201,7 +200,7 @@ if user == userPreset:
 
                                 if parkLatitudeValidation: 
                                     parkLatitude = float (parkLatitude)
-                                    np.append (parkCoordenate,format (parkLatitude, ".3f"))
+                                    parkCoordenate = np.append (parkCoordenate,format (parkLatitude, ".3f"))
                                 else:
                                     break
 
@@ -210,24 +209,39 @@ if user == userPreset:
                                 
                                 if parkLongitudeValidation: 
                                     parkLongitude = float (parkLongitude)
-                                    np.append (parkCoordenate, format (parkLongitude, ".3f"))
-                                    np.append (locationCoordenates, parkCoordenate)
+                                    parkCoordenate = np.append (parkCoordenate, format (parkLongitude, ".3f"))
+                                    locationCoordenates[2] = parkCoordenate
                                 else:
                                     break 
+
+                                backToMenu = True
+                                registeredCoordenates = True
                             else:
-                                print ("Actualizando coordenadas")
-
-                                counter = 1 
-
+                                counter = 1
                                 for coordenate in locationCoordenates:
                                     latitude = coordenate [0]
                                     longitude = coordenate [1]
-                                    print ("Coordenada [latitud,longitud] " + counter + " : ["+ latitude + ", "+ longitude + "]")
+                                    print ("coordenada [latitud,longitud] " + str(counter) + " : ['"+ str(latitude) + "', '"+ str(longitude) + "']")
                                     counter = counter + 1
-                                    
-                            backToMenu = True
-                            registeredCoordenates = True
 
+                                latitudes = locationCoordenates[:,0]
+                                longitudes = locationCoordenates[:,1]
+                                minLatitudeIndexes = np.where(latitudes == np.amin(latitudes))
+                                minLongitudesIndexes = np.where(longitudes == np.amin(longitudes))
+                                
+                                minLatitudeIndex = minLatitudeIndexes[0][0]
+                                minLongitudeIndex = minLongitudesIndexes[0][0]
+
+                                print("La coordenada  " + str(minLatitudeIndex + 1) + " es la que está más al sur")
+                                print("La coordenada  " + str(minLongitudeIndex + 1) + " es la que está más al occidente")
+                                print("Presione 1,2 o 3 para actualizar la respectiva coordenadas")
+                                selection = int(input("Presione 0 para regresar al menu"))
+                                
+                                if selection != 0:
+                                    print(selection)
+                                else:
+                                    backToMenu = True
+                                    break
 
                         if option == 1:
 
